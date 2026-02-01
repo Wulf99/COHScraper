@@ -27,12 +27,27 @@ def strip_namespaces(root: ET.Element) -> None:
             el.tag = el.tag.split("}", 1)[1]
 
 def clean_html(text: str) -> str:
+    """Strip HTML, normalize whitespace, and remove escape characters."""
     if not text:
         return ""
+
+    # Decode HTML entities
     text = unescape(text)
-    text = re.sub(r"<br\s*/?>", "\n", text)
+
+    # Convert breaks to spaces
+    text = re.sub(r"<br\s*/?>", " ", text, flags=re.IGNORECASE)
+
+    # Remove remaining HTML tags
     text = re.sub(r"<.*?>", "", text)
+
+    # Replace non-breaking spaces and odd unicode spacing
+    text = text.replace("\xa0", " ")
+
+    # Collapse multiple whitespace/newlines into single spaces
+    text = re.sub(r"\s+", " ", text)
+
     return text.strip()
+
 
 # --------------------------------------------------
 # HawkLink-specific scraper
@@ -87,4 +102,3 @@ def fetch_hawklink_events(
             events.append(event)
 
     return events
-
