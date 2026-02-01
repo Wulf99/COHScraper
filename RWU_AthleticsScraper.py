@@ -78,16 +78,3 @@ def fetch_athletics_events(
             events.append(event)
 
     return events
-
-
-# --------------------------------------------------
-# Standalone testing / dev mode
-# --------------------------------------------------
-if __name__ == "__main__":
-    # Example: fetch the current month’s events
-    sample_events = fetch_athletics_events()
-    print(f"Fetched {len(sample_events)} RWU Athletics events")
-
-    if sample_events:
-        from pprint import pprint
-        pprint(sample_events[0])
