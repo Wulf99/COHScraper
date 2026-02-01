@@ -23,13 +23,25 @@ def strip_namespaces(root: ET.Element) -> None:
             el.tag = el.tag.split("}", 1)[1]
 
 def clean_html(text: str) -> str:
-    """Strip HTML tags and normalize whitespace."""
+    """Strip HTML, normalize whitespace, and remove escape characters."""
     if not text:
         return ""
 
+    # Decode HTML entities
     text = unescape(text)
-    text = text.replace("<br/>", "\n")
+
+    # Convert breaks to spaces
+    text = re.sub(r"<br\s*/?>", " ", text, flags=re.IGNORECASE)
+
+    # Remove remaining HTML tags
     text = re.sub(r"<.*?>", "", text)
+
+    # Replace non-breaking spaces and odd unicode spacing
+    text = text.replace("\xa0", " ")
+
+    # Collapse multiple whitespace/newlines into single spaces
+    text = re.sub(r"\s+", " ", text)
+
     return text.strip()
 
 def extract_field(text: str, label: str) -> str:
