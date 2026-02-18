@@ -37,6 +37,7 @@ def run_all_scrapers() -> List[dict]:
             "https://25livepub.collegenet.com/calendars/student-events-6.rss",
             "https://25livepub.collegenet.com/calendars/featured-events-10.rss",
             "https://25livepub.collegenet.com/calendars/faculty-staff-events-1.rss",
+            "https://25livepub.collegenet.com/calendars/law-events-test.rss",
         ]
 
         events = fetch_25live_events(feeds_25live)
@@ -84,18 +85,16 @@ def insert_events(events: List[dict]) -> None:
 
     sql = """
     INSERT INTO events (
-        source, source_url, external_id,
+        category, source, source_url, external_id,
         title, description, link,
         published_at, event_start, event_end, event_date_text,
         location, organization, host,
-        sport, opponent, is_conference, status,
         ingested_at
     ) VALUES (
-        %(source)s, %(source_url)s, %(external_id)s,
+        'event', %(source)s, %(source_url)s, %(external_id)s,
         %(title)s, %(description)s, %(link)s,
         %(published_at)s, %(event_start)s, %(event_end)s, %(event_date_text)s,
         %(location)s, %(organization)s, %(host)s,
-        %(sport)s, %(opponent)s, %(is_conference)s, %(status)s,
         %(ingested_at)s
     )
     ON DUPLICATE KEY UPDATE
@@ -108,11 +107,7 @@ def insert_events(events: List[dict]) -> None:
         event_date_text = VALUES(event_date_text),
         location = VALUES(location),
         organization = VALUES(organization),
-        host = VALUES(host),
-        sport = VALUES(sport),
-        opponent = VALUES(opponent),
-        is_conference = VALUES(is_conference),
-        status = VALUES(status)
+        host = VALUES(host)
     """
 
     now = datetime.now(timezone.utc).replace(tzinfo=None)
