@@ -5,6 +5,7 @@ CREATE TABLE events (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
 
   -- provenance
+  category TEXT,
   source VARCHAR(100) NOT NULL,
   source_url TEXT,
   external_id VARCHAR(255) NOT NULL,
@@ -24,12 +25,6 @@ CREATE TABLE events (
   location VARCHAR(255),
   organization VARCHAR(255),
   host VARCHAR(255),
-
-  -- athletics-specific
-  sport VARCHAR(50),
-  opponent VARCHAR(255),
-  is_conference BOOLEAN,
-  status VARCHAR(50),
 
   -- metadata
   ingested_at DATETIME NOT NULL,
