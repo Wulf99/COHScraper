@@ -28,10 +28,10 @@ UNIVERSAL_SCHEMA = {
     "host": None,
 
     # athletics-specific (nullable)
-    "sport": None,
-    "opponent": None,
-    "is_conference": None,
-    "status": None,
+    #"sport": None,
+    #"opponent": None,
+    #"is_conference": None,
+    #"status": None,
 
     # metadata
     "ingested_at": None,
